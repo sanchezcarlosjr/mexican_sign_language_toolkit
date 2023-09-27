@@ -50,7 +50,7 @@ CLI
 
 
 Detect segment in image
-++++++++++++++++
++++++++++++++++++++++++
 
 .. code-block:: bash
 
