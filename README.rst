@@ -34,10 +34,34 @@ mexican_sign_language_toolkit
 =============================
 
 
-    Add a short description here!
+    Scientific computing toolkit designed to support visual languages such as mexican sign detection and analysis.
 
 
-A longer description of your project goes here...
+Installation from pypi
+======================
+
+.. code-block:: bash
+
+   pip install mexican_sign_language_toolkit
+
+
+CLI
+============
+
+
+Detect segment in image
+++++++++++++++++
+
+.. code-block:: bash
+
+   msl -lv [file_path]
+
+
+Python
+==========
+
+Consult our notebooks to learn more. We recommend you starting with Getting started.
+
 
 
 .. _pyscaffold-notes:
