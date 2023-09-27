@@ -30,7 +30,7 @@
 |
 
 =============================
-mexican_sign_language_toolkit
+Mexican sign language toolkit
 =============================
 
 
