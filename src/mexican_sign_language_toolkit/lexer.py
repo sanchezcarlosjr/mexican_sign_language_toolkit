@@ -11,7 +11,7 @@ def tokenize(regex):
             stack = ""
             return (matcher.lastgroup, matcher.group())
         stack = stack + text
-        matcher = re.match(regex, stack)
+        matcher = re.search(regex, stack)
         if matcher:
             stack = ""
             return (matcher.lastgroup, matcher.group())
