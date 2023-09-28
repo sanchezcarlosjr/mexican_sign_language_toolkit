@@ -22,7 +22,7 @@ class PoseLandmarker:
             image = mp.Image.create_from_file(path)
             space.append({
                 'segment': uuid7str(),
-                'name': name,
+                'name': regex.sub('(?:\(\d+\)|(?i)-Copy\d+)$', "", regex.sub('\..+', "", name)),
                 'matrix': standard_normalization(self.detect_from_image(image))
             })
         similar_paths = {}
