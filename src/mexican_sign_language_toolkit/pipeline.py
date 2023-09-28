@@ -18,7 +18,7 @@ def pipeline(space_path='../checkpoints/sign_language_space.npy', regex_path='..
             signal = brute_force.classify(landmarks)
             result = match(signal)
             if result:
-                return result
+                return result[0]
             return ""
         except:
             return ""
