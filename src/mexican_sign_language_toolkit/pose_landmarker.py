@@ -8,12 +8,12 @@ from mexican_sign_language_toolkit.neighbors import standard_normalization
 import regex
     
 class PoseLandmarker:
-    def __init__(self, pose_landmarker_model_asset='pose_landmarker_heavy.task', hand_landmarker_model_asset='hand_landmarker.task'):
+    def __init__(self, running_mode = mp.tasks.vision.RunningMode.IMAGE, pose_landmarker_model_asset='pose_landmarker_heavy.task', hand_landmarker_model_asset='hand_landmarker.task'):
         base_options = python.BaseOptions(model_asset_path=pose_landmarker_model_asset)
-        options = vision.PoseLandmarkerOptions(base_options=base_options, output_segmentation_masks=False)
+        options = vision.PoseLandmarkerOptions(base_options=base_options, output_segmentation_masks=False, running_mode=running_mode, min_pose_detection_confidence=0.8)
         self.pose_landmarker = vision.PoseLandmarker.create_from_options(options)
         base_options = python.BaseOptions(model_asset_path=hand_landmarker_model_asset)
-        self.hand_landmarker = vision.HandLandmarker.create_from_options(vision.HandLandmarkerOptions(base_options=base_options, num_hands=2))
+        self.hand_landmarker = vision.HandLandmarker.create_from_options(vision.HandLandmarkerOptions(base_options=base_options, num_hands=2,running_mode=running_mode))
     
     def create_database_from_images(self, paths):
         space = []
@@ -23,7 +23,7 @@ class PoseLandmarker:
             space.append({
                 'segment': uuid7str(),
                 'name': regex.sub('(?:\(\d+\)|(?i)-Copy\d+)$', "", regex.sub('\..+', "", name)),
-                'matrix': standard_normalization(self.detect_from_image(image))
+                'matrix': standard_normalization(self.detect_for_image(image))
             })
         similar_paths = {}
         for element_i in space:
@@ -39,10 +39,9 @@ class PoseLandmarker:
             paths = sorted(list(paths))
             regex_expressions.append(f"(?P<{key}>" + "".join(paths) + ")")
         return [r"(?P<noise>[\n\r\s]+)|"+"|".join(regex_expressions), np.array(space)]
-            
-    def detect_from_image(self,image):
-        pose_world_landmarks = self.pose_landmarker.detect(image).pose_world_landmarks
-        hand_landmarker_result = self.hand_landmarker.detect(image)
+        
+    def standardize(self, pose_landmarker_result, hand_landmarker_result):
+        pose_world_landmarks = pose_landmarker_result.pose_world_landmarks
         handedness = hand_landmarker_result.handedness
         hand_world_landmarks = hand_landmarker_result.hand_world_landmarks
         landmarks = np.zeros((59,3))
@@ -74,8 +73,18 @@ class PoseLandmarker:
         for idx in range(23,25):
             landmarks[idx-23+15+42] = (pose_world_landmarks[0][idx].x,pose_world_landmarks[0][idx].y,pose_world_landmarks[0][idx].z)
         return landmarks
+        
+    def detect_for_image(self,image):
+        pose_world_landmarks = self.pose_landmarker.detect(image)
+        hand_landmarker_result = self.hand_landmarker.detect(image)
+        return self.standardize(pose_world_landmarks,hand_landmarker_result)
+    
+    def detect_for_video(self, mp_image, frame_timestamp_ms):
+        pose_world_landmarks = self.pose_landmarker.detect_for_video(mp_image, frame_timestamp_ms)
+        hand_landmarker_result = self.hand_landmarker.detect_for_video(mp_image, frame_timestamp_ms)
+        return self.standardize(pose_world_landmarks,hand_landmarker_result)
 
 def detect_landmarks_from_image(path):
     poseLandmarker = PoseLandmarker()
     image = mp.Image.create_from_file(path)
-    return poseLandmarker.detect_from_image(image)
+    return poseLandmarker.detect_for_image(image)
