@@ -45,7 +45,7 @@ class VideoPipeline(Pipeline):
     def predict(self, input):
         cap = cv2.VideoCapture(input)
         fps = cap.get(cv2.CAP_PROP_FPS)
-        predictions = ""
+        predictions = []
         frame_index = 0
 
         while cap.isOpened():
@@ -56,12 +56,12 @@ class VideoPipeline(Pipeline):
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame_timestamp_ms = 1000 * frame_index / fps
             prediction = super().predict(rgb_frame, int(frame_timestamp_ms))
-            if prediction != "":
-               predictions += prediction+" "
+            if prediction != "" and (len(predictions) == 0 or prediction != predictions[-1]):
+               predictions.append(prediction) 
             frame_index += 1
 
         cap.release()
-        return predictions[:-1]
+        return " ".join(predictions)
 
     def detect(self, mp_image, frame_timestamp_ms):
         return self.pose_landmarker.detect_for_video(mp_image, frame_timestamp_ms)
