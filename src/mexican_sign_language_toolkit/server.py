@@ -8,10 +8,10 @@ def launch_server():
   predict = pipeline(VideoPipeline())
   demo = gr.Interface(
     predict,
-    [gr.Video()], 
+    [gr.Video(source="webcam", mirror_webcam=False)],
     ["text"],
-    examples=glob.glob('datasets/videos/*.mp4'),
+    examples=[*glob.glob('**/*.mp4', recursive=True),*glob.glob('**/*.mkv', recursive=True)],
     title="Mexican sign language demo",
-    description="mexican-sign-language-toolkit",
+    description="Mexican sign language recognizer by Ricardo Morfin, Ernesto Lozano, and Carlos Sanchez",
   )
   demo.launch(share=True)

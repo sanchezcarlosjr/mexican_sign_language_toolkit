@@ -25,11 +25,15 @@ def download_file(url, local_filename):
 def install(*paths):
     default_http_requests = [
         "https://github.com/sanchezcarlosjr/mexican_sign_language_toolkit/raw/main/checkpoints/regex.npy",
-        "https://github.com/sanchezcarlosjr/mexican_sign_language_toolkit/raw/main/checkpoints/sign_language_space.npy"
+        "https://github.com/sanchezcarlosjr/mexican_sign_language_toolkit/raw/main/checkpoints/sign_language_space.npy",
+        "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task",
+        "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task"
     ]
     default_names = [
         "regex.npy",
-        "sign_language_space.npy"
+        "sign_language_space.npy",
+        "pose_landmarker.task",
+        "hand_landmarker.task"
     ]
     for index, path in enumerate(paths):
         if not os.path.exists(path):
@@ -39,8 +43,10 @@ class Pipeline:
     """
     Base pipeline class for processing and predicting landmarks.
     """
-    def __init__(self, space_path='sign_language_space.npy', regex_path='regex.npy'):
-        install(space_path, regex_path)
+    def __init__(self, space_path='sign_language_space.npy', regex_path='regex.npy', pose_landmarker="pose_landmarker.task", hand_landmarker="hand_landmarker.task"):
+        install(regex_path, space_path, pose_landmarker, hand_landmarker)
+        self.pose_landmarker_path = pose_landmarker
+        self.hand_landmarker_path = hand_landmarker
         space = np.load(space_path, allow_pickle=True)
         regex = str(np.load(regex_path, allow_pickle=True))
         self.brute_force = Bruteforce(space)
@@ -61,14 +67,14 @@ class Pipeline:
 
 class ImagePipeline(Pipeline):
     def start_landmarker(self):
-        self.pose_landmarker = PoseLandmarker(mp.tasks.vision.RunningMode.IMAGE) 
+        self.pose_landmarker = PoseLandmarker(mp.tasks.vision.RunningMode.IMAGE, self.pose_landmarker_path, self.hand_landmarker_path)
     def detect(self, mp_image):
         return self.pose_landmarker.detect_for_image(mp_image) 
 
 
 class VideoPipeline(Pipeline):
     def start_landmarker(self):
-        self.pose_landmarker = PoseLandmarker(mp.tasks.vision.RunningMode.VIDEO) 
+        self.pose_landmarker = PoseLandmarker(mp.tasks.vision.RunningMode.VIDEO, self.pose_landmarker_path, self.hand_landmarker_path)
     """
     Pipeline for processing and predicting landmarks from videos.
     """
@@ -97,6 +103,8 @@ class VideoPipeline(Pipeline):
         return self.pose_landmarker.detect_for_video(mp_image, frame_timestamp_ms)
             
         
-def pipeline(pipe = ImagePipeline()):
+def pipeline(pipe = None):
+    if pipe == None:
+        pipe = ImagePipeline()
     pipe.start_landmarker()
     return pipe.predict

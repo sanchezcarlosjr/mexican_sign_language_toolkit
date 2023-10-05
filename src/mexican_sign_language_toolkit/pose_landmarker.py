@@ -8,7 +8,7 @@ from mexican_sign_language_toolkit.neighbors import standard_normalization
 import regex
     
 class PoseLandmarker:
-    def __init__(self, running_mode = mp.tasks.vision.RunningMode.IMAGE, pose_landmarker_model_asset='pose_landmarker_heavy.task', hand_landmarker_model_asset='hand_landmarker.task'):
+    def __init__(self, running_mode = mp.tasks.vision.RunningMode.IMAGE, pose_landmarker_model_asset='pose_landmarker.task', hand_landmarker_model_asset='hand_landmarker.task'):
         base_options = python.BaseOptions(model_asset_path=pose_landmarker_model_asset)
         options = vision.PoseLandmarkerOptions(base_options=base_options, output_segmentation_masks=False, running_mode=running_mode, min_pose_detection_confidence=0.8)
         self.pose_landmarker = vision.PoseLandmarker.create_from_options(options)
