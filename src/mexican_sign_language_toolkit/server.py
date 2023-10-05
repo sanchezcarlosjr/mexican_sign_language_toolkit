@@ -11,7 +11,7 @@ def launch_server():
     [gr.Video(source="webcam", mirror_webcam=False)],
     ["text"],
     examples=[*glob.glob('**/*.mp4', recursive=True),*glob.glob('**/*.mkv', recursive=True)],
-    title="Mexican sign language demo",
+    title="Mexican sign language recognizer demo",
     description="Mexican sign language recognizer by Ricardo Morfin, Ernesto Lozano, and Carlos Sanchez",
   )
   demo.launch(share=True)

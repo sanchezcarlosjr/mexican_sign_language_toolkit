@@ -92,7 +92,7 @@ class VideoPipeline(Pipeline):
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame_timestamp_ms = 1000 * frame_index / fps
             prediction = super().predict(rgb_frame, int(frame_timestamp_ms))
-            if prediction != "" and (len(predictions) == 0 or prediction != predictions[-1]):
+            if prediction != "":
                predictions.append(prediction) 
             frame_index += 1
 
