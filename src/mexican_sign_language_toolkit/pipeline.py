@@ -7,6 +7,7 @@ import cv2
 import time
 import requests
 import os
+import glob
 
 def download_file(url, local_filename):
     """
@@ -22,16 +23,25 @@ def download_file(url, local_filename):
             for chunk in response.iter_content(chunk_size=8192):
                 file.write(chunk)
                 
+
+def create_space():
+    images = [*glob.glob('**/*.png', recursive=True),*glob.glob('**/*.jpg', recursive=True),*glob.glob('**/*.jpeg', recursive=True)]
+    pose_landmarker = PoseLandmarker()
+    regex,db = pose_landmarker.create_database_from_images(images)
+    np.save('language_space.npy', db)
+    np.save('regex.npy', regex)
+
+
 def install(*paths):
     default_http_requests = [
         "https://github.com/sanchezcarlosjr/mexican_sign_language_toolkit/raw/main/checkpoints/regex.npy",
-        "https://github.com/sanchezcarlosjr/mexican_sign_language_toolkit/raw/main/checkpoints/sign_language_space.npy",
+        "https://github.com/sanchezcarlosjr/mexican_sign_language_toolkit/raw/main/checkpoints/language_space.npy",
         "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task",
         "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task"
     ]
     default_names = [
         "regex.npy",
-        "sign_language_space.npy",
+        "language_space.npy",
         "pose_landmarker.task",
         "hand_landmarker.task"
     ]
@@ -43,7 +53,7 @@ class Pipeline:
     """
     Base pipeline class for processing and predicting landmarks.
     """
-    def __init__(self, space_path='sign_language_space.npy', regex_path='regex.npy', pose_landmarker="pose_landmarker.task", hand_landmarker="hand_landmarker.task"):
+    def __init__(self, space_path='language_space.npy', regex_path='regex.npy', pose_landmarker="pose_landmarker.task", hand_landmarker="hand_landmarker.task"):
         install(regex_path, space_path, pose_landmarker, hand_landmarker)
         self.pose_landmarker_path = pose_landmarker
         self.hand_landmarker_path = hand_landmarker

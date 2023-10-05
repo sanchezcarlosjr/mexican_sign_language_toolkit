@@ -4,7 +4,7 @@ import sys
 
 from mexican_sign_language_toolkit.server import launch_server
 from mexican_sign_language_toolkit import __version__
-from mexican_sign_language_toolkit.pipeline import pipeline,VideoPipeline
+from mexican_sign_language_toolkit.pipeline import pipeline,VideoPipeline,create_space
 
 __author__ = "sanchezcarlosjr"
 __copyright__ = "sanchezcarlosjr"
@@ -29,6 +29,12 @@ class WebServerLauncherAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=None):
         _logger.debug("Starting...")
         launch_server()
+        _logger.debug("Ending...")
+
+class SpaceCreatorAction(argparse.Action):
+    def __call__(self, parser, namespace, files, option_string=None):
+        _logger.debug("Starting...")
+        create_space()
         _logger.debug("Ending...")
 
 
@@ -64,6 +70,14 @@ def parse_args(args):
             nargs='?',
             default='7860',
             action=WebServerLauncherAction
+    )
+    parser.add_argument(
+            "-cs",
+            "--create",
+            help="Create space",
+            nargs='?',
+            default=['regex.npy', 'sign_language_space.npy'],
+            action=SpaceCreatorAction
     )
     parser.add_argument(
         "-v",

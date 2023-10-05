@@ -38,7 +38,7 @@ class PoseLandmarker:
         for key,paths in similar_paths.items():
             paths = sorted(list(paths))
             regex_expressions.append(f"(?P<{key}>" + "".join(paths) + ")")
-        return [r"(?P<noise>[\n\r\s]+)|"+"|".join(regex_expressions), np.array(space)]
+        return [r"(?P<noise>(?:[\n\r\s]+|noise))|"+"|".join(regex_expressions), np.array(space)]
         
     def standardize(self, pose_landmarker_result, hand_landmarker_result):
         pose_world_landmarks = pose_landmarker_result.pose_world_landmarks
