@@ -39,6 +39,15 @@ Detect segment in image
    msl -lv [file_path]
 
 
+Launch web server
++++++++++++++++++++++++
+
+.. code-block:: bash
+
+   msl -s
+
+
+
 Python
 ==========
 
