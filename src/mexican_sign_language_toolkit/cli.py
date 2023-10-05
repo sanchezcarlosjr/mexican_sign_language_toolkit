@@ -2,7 +2,7 @@ import argparse
 import logging
 import sys
 
-from breast_cancer_toolkit.server import launch_server
+from mexican_sign_language_toolkit.server import launch_server
 from mexican_sign_language_toolkit import __version__
 from mexican_sign_language_toolkit.pipeline import pipeline,VideoPipeline
 
