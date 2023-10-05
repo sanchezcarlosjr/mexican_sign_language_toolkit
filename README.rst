@@ -47,6 +47,12 @@ Launch web server
    msl -s
 
 
+Create language space
++++++++++++++++++++++++
+
+.. code-block:: bash
+
+   msl -cs
 
 Python
 ==========
