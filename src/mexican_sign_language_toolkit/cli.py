@@ -2,6 +2,7 @@ import argparse
 import logging
 import sys
 
+from breast_cancer_toolkit.server import launch_server
 from mexican_sign_language_toolkit import __version__
 
 __author__ = "sanchezcarlosjr"
@@ -15,6 +16,11 @@ _logger = logging.getLogger(__name__)
 # The functions defined in this section are wrappers around the main Python
 # API allowing them to be called directly from the terminal as a CLI
 # executable/script.
+class WebServerLauncherAction(argparse.Action):
+    def __call__(self, parser, namespace, value, option_string=None):
+        _logger.debug("Starting...")
+        launch_server()
+        _logger.debug("Ending...")
 
 
 def parse_args(args):
@@ -32,6 +38,14 @@ def parse_args(args):
         "--version",
         action="version",
         version=f"mexican_sign_language_toolkit {__version__}",
+    )
+    parser.add_argument(
+            "-s",
+            "--server",
+            help="launch webserver",
+            nargs='?',
+            default='7860',
+            action=WebServerLauncherAction
     )
     parser.add_argument(
         "-v",
