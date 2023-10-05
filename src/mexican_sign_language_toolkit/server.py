@@ -3,9 +3,11 @@ import numpy as np
 from mexican_sign_language_toolkit.pipeline import pipeline,VideoPipeline
 import glob 
 
+def predict(path):
+  predict_with_path = pipeline(VideoPipeline())
+  return predict_with_path(path)
 
 def launch_server():
-  predict = pipeline(VideoPipeline())
   demo = gr.Interface(
     predict,
     [gr.Video(source="webcam", mirror_webcam=False)],

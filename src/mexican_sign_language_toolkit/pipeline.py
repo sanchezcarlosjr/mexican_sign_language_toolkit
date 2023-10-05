@@ -62,6 +62,7 @@ class Pipeline:
             result = self.match(signal)
             return result[0] if result else ""
         except Exception as e:
+            print(e)
             return ""
 
 
