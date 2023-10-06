@@ -8,6 +8,10 @@ import time
 import requests
 import os
 import glob
+import traceback
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 def download_file(url, local_filename):
     """
@@ -68,11 +72,14 @@ class Pipeline:
         """
         try:
             landmarks = self.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=input[0]), *input[1:])
+            if landmarks is None:
+                return ""
             signal = self.brute_force.classify(landmarks)
             result = self.match(signal)
             return result[0] if result else ""
         except Exception as e:
-            print(e)
+            just_the_string = traceback.format_exc()
+            logger.debug(just_the_string)
             return ""
 
 
@@ -94,7 +101,6 @@ class VideoPipeline(Pipeline):
         fps = cap.get(cv2.CAP_PROP_FPS)
         predictions = []
         frame_index = 0
-
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:

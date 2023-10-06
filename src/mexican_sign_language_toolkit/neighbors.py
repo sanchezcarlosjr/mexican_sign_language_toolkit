@@ -27,7 +27,7 @@ class Bruteforce:
             distances[i] = self.distance(X, self.space[i]['matrix'])
         nearest_indices = np.argsort(distances)[:k]
         return distances[nearest_indices], nearest_indices
-    def classify(self, matrix, threshold=0.945):
+    def classify(self, matrix, threshold=0.96):
         distances, indices = self.query(matrix)
         if similarity(distances[0]) >= threshold:
            return self.space[indices][0]['name']

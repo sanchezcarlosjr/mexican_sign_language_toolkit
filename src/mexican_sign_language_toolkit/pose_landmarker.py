@@ -47,6 +47,8 @@ class PoseLandmarker:
         handedness = hand_landmarker_result.handedness
         hand_world_landmarks = hand_landmarker_result.hand_world_landmarks
         landmarks = np.zeros((59,3))
+        if len(pose_world_landmarks) == 0:
+            return None
         for idx in range(0,15):
             landmarks[idx] = (pose_world_landmarks[0][idx].x,pose_world_landmarks[0][idx].y,pose_world_landmarks[0][idx].z)
         left,right = (
