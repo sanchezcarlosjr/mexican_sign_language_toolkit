@@ -9,6 +9,7 @@ import requests
 import os
 import glob
 import traceback
+from uuid_extensions import uuid7str
 import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -101,19 +102,29 @@ class VideoPipeline(Pipeline):
         fps = cap.get(cv2.CAP_PROP_FPS)
         predictions = []
         frame_index = 0
+        uuid = uuid7str()
+        path = f"pipeline{uuid}"
+        os.mkdir(path)
+        os.mkdir(f"{path}/frames")
+        file_predictions = open(f"{path}/predictions.csv", "w")
+        file_predictions.write("name,prediction\n")
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 break
             
+            name = f"{path}/frames/frame{frame_index}.jpg"
+            cv2.imwrite(name, frame)
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame_timestamp_ms = 1000 * frame_index / fps
             prediction = super().predict(rgb_frame, int(frame_timestamp_ms))
             if prediction != "":
+               file_predictions.write(f"frame{frame_index},{prediction}\n")
                predictions.append(prediction) 
             frame_index += 1
 
         cap.release()
+        file_predictions.close()
         return " ".join(predictions)
 
     def detect(self, mp_image, frame_timestamp_ms):
