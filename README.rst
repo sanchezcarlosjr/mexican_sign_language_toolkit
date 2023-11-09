@@ -66,8 +66,6 @@ Let's break down the provided example for clarity:
 
 4. If a gesture recognition system is trained with this sequenced data, it would recognize the sequence of gestures "rabbit-1" followed by "rabbit-2" and interpret them as the word "rabbit."
 
-This process implies that there is a machine learning or image processing application that uses the sequence of gestures represented by these images to infer the intended word or action. The .npy files likely contain structured data arrays that the application can efficiently process to learn or predict the gestures.
-
 
 Python
 ==========
