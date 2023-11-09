@@ -54,6 +54,21 @@ Create language space
 
    msl -cs
 
+The command in question is designed to search and organize image files in a way that facilitates the creation of a sequenced dataset, particularly useful for image recognition or gesture recognition tasks. It looks through the current directory for all images with .png or .jpg extensions. The identified images are then utilized to form a sequence that corresponds to the filenames, allowing for the creation of examples that share the file's base name. Additionally, the command generates two .npy (NumPy array) files, which are likely used to store the organized data for further processing.
+
+Let's break down the provided example for clarity:
+
+1. You have a dataset related to the word "rabbit," which includes images associated with two specific gestures named "rabbit-1" and "rabbit-2."
+
+2. To improve the recognition accuracy, you need multiple examples of these gestures. Therefore, you have images named "rabbit-1. example1.jpg" and "rabbit-1.example2.jpg" as variations or examples of the "rabbit-1" gesture, and a single image "rabbit-2.jpg" for the second gesture.
+
+3. The command organizes these images in a sequence that reflects their naming convention.
+
+4. If a gesture recognition system is trained with this sequenced data, it would recognize the sequence of gestures "rabbit-1" followed by "rabbit-2" and interpret them as the word "rabbit."
+
+This process implies that there is a machine learning or image processing application that uses the sequence of gestures represented by these images to infer the intended word or action. The .npy files likely contain structured data arrays that the application can efficiently process to learn or predict the gestures.
+
+
 Python
 ==========
 
