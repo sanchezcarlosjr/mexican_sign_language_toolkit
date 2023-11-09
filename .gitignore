@@ -55,3 +55,8 @@ MANIFEST
 .conda*/
 .python-version
 datasets/
+/hand_landmarker.task
+/language_space.npy
+/nohup.out
+/pose_landmarker.task
+/regex.npy
