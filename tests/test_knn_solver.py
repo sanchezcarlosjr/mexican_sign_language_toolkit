@@ -27,7 +27,7 @@ def test_should_find_k_nearest_neighbors_with_kdtree():
         {'segment': '1', 'name': 'A', 'matrix': standard_normalization(matrix)},
         {'segment': '2', 'name': 'B', 'matrix': standard_normalization(np.array([[2, 4], [3, 2]]))}
     ])
-    knn = AutomaticNearestNeighbors(space)
+    knn = AutomaticNearestNeighbors(space, n=2)
     assert knn.classify(matrix) == 'A'
     assert knn.classify(np.rot90(matrix)) == 'A'
     assert knn.classify(matrix + 10 ** 10) == 'A'
