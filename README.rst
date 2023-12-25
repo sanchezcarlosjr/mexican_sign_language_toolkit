@@ -12,7 +12,7 @@
 |
 
 =============================
-Mexican sign language toolkit
+Gesture spatial language toolkit
 =============================
 
 
