@@ -72,6 +72,9 @@ Python
 
 Consult our notebooks to learn more. We recommend you starting with Getting started.
 
+Docs
+https://carlos-eduardo-sanchez-torres.sanchezcarlosjr.com/Lenguajes-gesto-espaciales-375c333cdcfb41ef9bdc2cc97146e1b6
+
 
 
 .. _pyscaffold-notes:
