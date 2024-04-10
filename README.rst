@@ -78,7 +78,7 @@ https://carlos-eduardo-sanchez-torres.sanchezcarlosjr.com/Lenguajes-gesto-espaci
 Use cases
 ==========
 * Training rutine checkers.
-* Video reactions on MacBook Pro.
+* Video reactions as MacBook Pro.
 * Sign languages.
 
 
