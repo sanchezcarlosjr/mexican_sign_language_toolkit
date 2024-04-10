@@ -75,6 +75,11 @@ Consult our notebooks to learn more. We recommend you starting with Getting star
 Docs
 https://carlos-eduardo-sanchez-torres.sanchezcarlosjr.com/Lenguajes-gesto-espaciales-375c333cdcfb41ef9bdc2cc97146e1b6
 
+Use cases
+==========
+* Training rutine checkers.
+* Video reactions on MacBook Pro.
+* Sign languages.
 
 
 .. _pyscaffold-notes:
